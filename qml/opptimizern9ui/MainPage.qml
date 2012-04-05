@@ -2,31 +2,45 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 
 Page {
-    tools: commonTools
-    id : mainpage
+    Text {
+        id: settingstext
+
+            anchors{
+                top:parent.top
+                topMargin:10
+                right:parent.right
+                left:parent.left
+            }
+
+            text: "Settings:"
+            font.pointSize: 18
+        }
 
     Row {
              id: ocactivaterow
              spacing: 10
              anchors{
-                 top:mainpage.top
-                 topMargin: 50
+                 top:settingstext.bottom
+                 topMargin: 5
                  right:parent.right
+                 rightMargin: 10
                  left:parent.left
+                 leftMargin: 10
              }
 
-             Switch {
-                 id: ocactivateswitch
-             }
 
              Text {
                  width: ocactivaterow.width - ocactivaterow.spacing - ocactivateswitch.width
                  height: ocactivateswitch.height
                  verticalAlignment: Text.AlignVCenter
                  text: ocactivateswitch.checked ? "Overclocking on" : "Overclocking off"
-                 font.pixelSize: platformStyle.fontSizeMedium
-                 color: platformStyle.colorNormalLight
+
              }
+             Switch {
+
+                 id: ocactivateswitch
+             }
+
          }
 
     Row {
@@ -34,45 +48,73 @@ Page {
              spacing: 10
              anchors{
                  top:ocactivaterow.bottom
-                 topMargin: 5
+                 topMargin: 10
                  right:parent.right
+                 rightMargin: 10
                  left:parent.left
+                 leftMargin: 10
              }
 
-             Switch {
-                 id: smartreflexswitch
-             }
 
              Text {
                  width: smartreflex.width - smartreflex.spacing - smartreflexswitch.width
                  height: smartreflexswitch.height
                  verticalAlignment: Text.AlignVCenter
-                 text: smartreflexswitch.checked ? "Switched on" : "Switched off"
-                 font.pixelSize: platformStyle.fontSizeMedium
-                 color: platformStyle.colorNormalLight
+                 text: smartreflexswitch.checked ? "SmartReflex on" : "SmartReflex off"
+
              }
+             Switch {
+
+
+                 id: smartreflexswitch
+             }
+
          }
 
     Text {
+        id:textocfreq
         anchors{
             top:smartreflex.bottom
-            topMargin: 5
+            topMargin: 20
             right:parent.right
             left:parent.left
         }
-        verticalAlignment: Text.AlignVCenter
-        text: "Choose your oc by using the slider below and click on Set button"
-        font.pixelSize: platformStyle.fontSizeMedium
-        color: platformStyle.colorNormalLight
+
+        text: "Frequency :"
+        font.pointSize: 20
+        wrapMode: Text.WrapAnywhere
+
     }
 
     Slider {
         id: ocslider
-         maximumValue: 300
-         minimumValue: 1200
-         value: 1000
-         stepSize: 50
-         valueIndicatorVisible: true
+        anchors{
+         top:textocfreq.bottom
+         topMargin: 30
+        }
+        maximumValue: 1200
+             minimumValue: 300
+             value: 1000
+             stepSize: 50
+             valueIndicatorVisible: true
+     }
+    ToolBarLayout {
+         id: commonTools
+         ToolItem  {
+             iconId: "icon-m-toolbar-back";
+             onClicked: Qt.quit()
+         }
+         ToolButtonRow {
+             ToolButton {
+                 id: tabButSave
+                 text: "Save"
+             }
+             ToolButton {
+                 id: tabButReset
+                 text: "Reset to defaults"
+             }
+
+         }
      }
 
 }

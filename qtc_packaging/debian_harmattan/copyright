@@ -1,5 +1,5 @@
-This package was debianized by Leo <leo@unknown> on
-Thu, 05 Apr 2012 11:27:05 +0200.
+This package was debianized by unknown <> on
+Thu, 05 Apr 2012 14:10:10 +0200.
 
 It was downloaded from <url://example.com>
 
@@ -32,7 +32,7 @@ License:
 On Debian systems, the complete text of the GNU General
 Public License can be found in `/usr/share/common-licenses/GPL'.
 
-The Debian packaging is (C) 2012, Leo <leo@unknown> and
+The Debian packaging is (C) 2012, unknown <> and
 is licensed under the GPL, see above.
 
 
