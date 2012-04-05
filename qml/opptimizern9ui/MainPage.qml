@@ -13,7 +13,7 @@ Page {
             }
 
             text: "Settings:"
-            font.pointSize: 18
+            font.pointSize: 40
         }
 
     Row {
@@ -34,6 +34,7 @@ Page {
                  height: ocactivateswitch.height
                  verticalAlignment: Text.AlignVCenter
                  text: ocactivateswitch.checked ? "Overclocking on" : "Overclocking off"
+                 font.pointSize: 25
 
              }
              Switch {
@@ -61,11 +62,10 @@ Page {
                  height: smartreflexswitch.height
                  verticalAlignment: Text.AlignVCenter
                  text: smartreflexswitch.checked ? "SmartReflex on" : "SmartReflex off"
+                 font.pointSize: 25
 
              }
              Switch {
-
-
                  id: smartreflexswitch
              }
 
@@ -81,7 +81,7 @@ Page {
         }
 
         text: "Frequency :"
-        font.pointSize: 20
+        font.pointSize: 40
         wrapMode: Text.WrapAnywhere
 
     }
@@ -100,7 +100,11 @@ Page {
      }
     ToolBarLayout {
          id: commonTools
-         ToolItem  {
+         anchors{
+             bottom: parent.bottom
+         }
+
+         ToolIcon  {
              iconId: "icon-m-toolbar-back";
              onClicked: Qt.quit()
          }
@@ -111,7 +115,10 @@ Page {
              }
              ToolButton {
                  id: tabButReset
-                 text: "Reset to defaults"
+                 text: "Reset"
+                 onClicked: {
+                     ocslider.value=1000
+                 }
              }
 
          }
