@@ -2,126 +2,57 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 
 Page {
-    Text {
-        id: settingstext
-
-            anchors{
-                top:parent.top
-                topMargin:10
-                right:parent.right
-                left:parent.left
-            }
-
-            text: "Settings:"
-            font.pointSize: 40
-        }
-
-    Row {
-             id: ocactivaterow
-             spacing: 10
-             anchors{
-                 top:settingstext.bottom
-                 topMargin: 5
-                 right:parent.right
-                 rightMargin: 10
-                 left:parent.left
-                 leftMargin: 10
-             }
-
-
-             Text {
-                 width: ocactivaterow.width - ocactivaterow.spacing - ocactivateswitch.width
-                 height: ocactivateswitch.height
-                 verticalAlignment: Text.AlignVCenter
-                 text: ocactivateswitch.checked ? "Overclocking on" : "Overclocking off"
-                 font.pointSize: 25
-
-             }
-             Switch {
-
-                 id: ocactivateswitch
-             }
-
-         }
-
-    Row {
-             id: smartreflex
-             spacing: 10
-             anchors{
-                 top:ocactivaterow.bottom
-                 topMargin: 10
-                 right:parent.right
-                 rightMargin: 10
-                 left:parent.left
-                 leftMargin: 10
-             }
-
-
-             Text {
-                 width: smartreflex.width - smartreflex.spacing - smartreflexswitch.width
-                 height: smartreflexswitch.height
-                 verticalAlignment: Text.AlignVCenter
-                 text: smartreflexswitch.checked ? "SmartReflex on" : "SmartReflex off"
-                 font.pointSize: 25
-
-             }
-             Switch {
-                 id: smartreflexswitch
-             }
-
-         }
-
-    Text {
-        id:textocfreq
-        anchors{
-            top:smartreflex.bottom
-            topMargin: 20
-            right:parent.right
-            left:parent.left
-        }
-
-        text: "Frequency :"
-        font.pointSize: 40
-        wrapMode: Text.WrapAnywhere
-
-    }
-
-    Slider {
-        id: ocslider
-        anchors{
-         top:textocfreq.bottom
-         topMargin: 30
-        }
-        maximumValue: 1200
-             minimumValue: 300
-             value: 1000
-             stepSize: 50
-             valueIndicatorVisible: true
-     }
+    anchors.fill: parent
+    tools: commonTools
     ToolBarLayout {
          id: commonTools
          anchors{
              bottom: parent.bottom
          }
-
-         ToolIcon  {
-             iconId: "icon-m-toolbar-back";
-             onClicked: Qt.quit()
+         ToolIcon{
+             id: toolIcoBack
+             iconId: "toolbar-back";
+             onClicked: { myMenu.close(); pageStack.pop(); }
+             visible: false
          }
-         ToolButtonRow {
-             ToolButton {
-                 id: tabButSave
-                 text: "Save"
+         ButtonRow {
+             style: TabButtonStyle { }
+             TabButton {
+                 tab: tabStatus
+                 text: "Status"
              }
-             ToolButton {
-                 id: tabButReset
-                 text: "Reset"
-                 onClicked: {
-                     ocslider.value=1000
-                 }
+             TabButton {
+                 tab: settingsPage
+                 text: "Settings"
              }
-
+         }
+         ToolIcon {
+             platformIconId: "toolbar-view-menu"
+             anchors.right: (parent === undefined) ? undefined : parent.right
+             onClicked: (myMenu.status == DialogStatus.Closed) ? myMenu.open() : myMenu.close()
          }
      }
-
+    TabGroup {
+        id: tabGroup
+        currentTab: tabStatus
+        anchors.fill: parent
+        // define the content for tab 1
+        StatusPage {
+            id: tabStatus
+            anchors { fill: tabGroup;}
+        }
+        // define the content for tab 2
+        SettingsPage {
+            id: settingsPage
+            anchors { fill: tabGroup;}
+        }
+    }
+    Menu {
+        id: myMenu
+        visualParent: pageStack
+        MenuLayout {
+            MenuItem { text: qsTr("Invert Colors"); onClicked: { theme.inverted = !theme.inverted; objQSettings.setValue("/settings/THEME/inverted", theme.inverted)}}
+            MenuItem { text: qsTr("About OPPtimizer"); onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))}
+        }
+    }
 }
