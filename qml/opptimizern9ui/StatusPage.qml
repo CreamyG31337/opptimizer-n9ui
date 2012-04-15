@@ -9,7 +9,7 @@ Page {
     BusyIndicator{
         id: myBusyInd
         platformStyle: BusyIndicatorStyle { size: "large" }
-        anchors.centerIn: aboutPage
+        anchors.centerIn: parent
         visible: false
         running: false
         z: 50
@@ -19,7 +19,7 @@ Page {
         id: lblFreqText
         anchors.top: parent.top
         anchors.left: parent.left
-        text: "Current Frequency: "
+        text: "Max Frequency (MHz): "
     }
 
     Label{
@@ -33,7 +33,7 @@ Page {
         id: lblVoltText
         anchors.left: parent.left
         anchors.top: lblFreqText.bottom
-        text: "Current Voltage: "
+        text: "Max Voltage (uV): "
     }
 
     Label{
@@ -44,16 +44,37 @@ Page {
     }
 
     Label{
+        id: lblSRText
+        anchors.left: parent.left
+        anchors.top: lblVoltVal.bottom
+        text: "SmartReflex Status: "
+    }
+
+    Label{
+        id: lblSRVal
+        anchors.top: lblVoltVal.bottom
+        anchors.left: lblSRText.right
+        text: "Unknown"
+    }
+
+    Label{
         id: lblModuleText
         anchors.left: parent.left
-        anchors.top: lblVoltText.bottom
+        anchors.top: lblSRVal.bottom
         text: "Kernel Module Version: "
     }
 
     Label{
         id: lblModuleVal
-        anchors.top: lblVoltText.bottom
+        anchors.top: lblSRVal.bottom
         anchors.left: lblModuleText.right
         text: "Unknown"
+    }
+    Component.onCompleted: {
+        objOpptimizerUtils.refreshStatus();
+        lblModuleVal.text = objOpptimizerUtils.getModuleVersion();
+        lblVoltVal.text = objOpptimizerUtils.getMaxVoltage();
+        lblSRVal.text = objOpptimizerUtils.getSmartReflexStatus();
+        lblFreqVal.text = objOpptimizerUtils.getMaxFreq();
     }
 }

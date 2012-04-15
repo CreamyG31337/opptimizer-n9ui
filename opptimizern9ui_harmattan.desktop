@@ -4,8 +4,8 @@ Version=1.0
 Type=Application
 Terminal=false
 Name=opptimizer-n9ui
-Exec=/usr/bin/invoker --type=d -s /opt/opptimizer-n9ui/bin/opptimizer-n9ui
-Icon=/usr/share/icons/hicolor/80x80/apps/opptimizer-n9ui80.png
+Exec=/usr/bin/invoker --type=d -s /opt/opptimizern9ui/bin/opptimizern9ui
+Icon=/usr/share/icons/hicolor/80x80/apps/opptimizern9ui80.png
 X-Window-Icon=
 X-HildonDesk-ShowInToolbar=true
 X-Osso-Type=application/x-executable

@@ -26,7 +26,14 @@ class OpptimizerUtils : public QObject
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QString isModuleInstalled();
+    Q_INVOKABLE QString getModuleVersion();
+    Q_INVOKABLE QString getMaxVoltage();
+    Q_INVOKABLE QString getSmartReflexStatus();
+    Q_INVOKABLE QString getMaxFreq();
+    Q_INVOKABLE void refreshStatus();
+private:
+    QString lastOPPtimizerStatus;
+    QString lastSmartReflexStatus;
 };
 
 //annoying wrapper class for qsettings
