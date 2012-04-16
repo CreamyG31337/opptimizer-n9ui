@@ -15,7 +15,7 @@ void OpptimizerUtils::applySettings(int reqFreq, int reqVolt, bool SREnable, boo
     reqStr = QString::number(newFreq);
     qDebug() << reqStr;
     QFile file("/proc/opptimizer");
-    if (! file.open(QIODevice::WriteOnly | QIODevice::Text));{
+    if (! file.open(QIODevice::WriteOnly | QIODevice::Text)){
         qDebug() << "file open failed!!";
         qDebug() << file.errorString();
         return;

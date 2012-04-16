@@ -5,6 +5,10 @@ import com.nokia.extras 1.0
 
 Page{
     anchors.margins: UiConstants.DefaultMargin
+    Timer {
+        id: blockEvents
+        interval: 200; running: true; repeat: false
+    }
     Row {
          id: rowEnabled
          anchors{
@@ -18,28 +22,66 @@ Page{
              height: swOCEnabled.height
              verticalAlignment: Text.AlignVCenter
              text: "Apply on Startup"
+             enabled: false //not implemented
          }
          Switch {
              id: swOCEnabled
+             checked: objQSettings.getValue("/settings/OcOnStartup/enabled",true)
+             onCheckedChanged:{//wow this crappy harmattan QML is missing both the pressed and clicked events and properties for switches.
+                if (!blockEvents.running) {//so we get to use this instead. (onChecked fires too early -- when the component is created)
+                    objQSettings.setValue("/settings/OcOnStartup/enabled",swOCEnabled.checked)
+                }
+            }
          }
      }
 
     Row {
-         id: rowSR
+         id: rowCustomVoltage
          anchors{
              topMargin: 10
-             top: rowEnabled.bottom
+             top: parent.top
              right: parent.right
              left: parent.left
          }
          Label {
-             width: rowSR.width - rowSR.spacing - swSmartReflex.width
-             height: swSmartReflex.height
-             text: "SmartReflex"
+             width: rowCustomVoltage.width - rowCustomVoltage.spacing - swCustomVolts.width
+             height: swCustomVolts.height
+             verticalAlignment: Text.AlignVCenter
+             text: "Custom Voltage"
          }
          Switch {
-             id: swSmartReflex
-         }
+             id: swCustomVolts
+             checked: objQSettings.getValue("/settings/CustomVolts/enabled",true)
+             onCheckedChanged:{
+                if (!blockEvents.running) {
+                    objQSettings.setValue("/settings/CustomVolts/enabled",swCustomVolts.checked)
+                }
+            }
+        }
+
+
+    Row {
+        id: rowSR
+        anchors{
+        topMargin: 10
+        top: rowCustomVoltage.bottom
+        right: parent.right
+        left: parent.left
+        }
+        Label {
+            width: rowSR.width - rowSR.spacing - swSmartReflex.width
+            height: swSmartReflex.height
+            text: "SmartReflex"
+        }
+        Switch {
+            id: swSmartReflex
+            checked: objQSettings.getValue("/settings/SmartReflex/enabled",true)
+            onCheckedChanged:{
+                if (!blockEvents.running) {
+                    objQSettings.setValue("/settings/SmartReflex/enabled",swSmartReflex.checked)
+                }
+            }
+        }
     }
 
     Label {
@@ -107,7 +149,7 @@ Page{
         anchors.right: parent.right
         text: "Apply"
         onClicked: {
-            objOpptimizerUtils.applySettings(cbFreq.value, null, null, null)
+            objOpptimizerUtils.applySettings(cbFreq.value, cbVolts.value, null, null)
         }
     }
 }
