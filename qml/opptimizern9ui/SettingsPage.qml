@@ -107,7 +107,7 @@ Page{
         anchors.right: parent.right
         text: "Apply"
         onClicked: {
-
+            objOpptimizerUtils.applySettings(cbFreq.value, null, null, null)
         }
     }
 }

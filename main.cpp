@@ -6,12 +6,27 @@ MySettings::MySettings():
     qsettInternal(new QSettings("/home/user/.config/FakeCompany/OPPtimizer.conf",QSettings::NativeFormat,this))
 {
 }
-MySettings::~MySettings()
-{
+MySettings::~MySettings(){
 }
 
-void OpptimizerUtils::refreshStatus()
-{
+void OpptimizerUtils::applySettings(int reqFreq, int reqVolt, bool SREnable, bool changeVolt){
+    unsigned long newFreq = reqFreq * 1000 * 1000;
+    QString reqStr;
+    reqStr = QString::number(newFreq);
+    qDebug() << reqStr;
+    QFile file("/proc/opptimizer");
+    if (! file.open(QIODevice::WriteOnly | QIODevice::Text));{
+        qDebug() << "file open failed!!";
+        qDebug() << file.errorString();
+        return;
+    }
+
+    QTextStream out(&file);
+    out << reqStr;
+    file.close();
+}
+
+void OpptimizerUtils::refreshStatus(){
     QProcess p;
     QString strOutput;
     QString strError;
@@ -41,8 +56,7 @@ void OpptimizerUtils::refreshStatus()
         lastSmartReflexStatus = strOutput2;
 }
 
-QString OpptimizerUtils::getModuleVersion()
-{
+QString OpptimizerUtils::getModuleVersion(){
     if(lastOPPtimizerStatus == "ERROR")
         return "ERR";
 
@@ -55,8 +69,7 @@ QString OpptimizerUtils::getModuleVersion()
         return "Unknown";
 }
 
-QString OpptimizerUtils::getMaxVoltage()
-{
+QString OpptimizerUtils::getMaxVoltage(){
     if(lastOPPtimizerStatus == "ERROR")
         return "ERR";
 
@@ -69,8 +82,7 @@ QString OpptimizerUtils::getMaxVoltage()
         return "Unknown";
 }
 
-QString OpptimizerUtils::getSmartReflexStatus()
-{
+QString OpptimizerUtils::getSmartReflexStatus(){
     if(lastSmartReflexStatus == "ERROR")
         return "ERR";
     if (lastSmartReflexStatus.left(1) == "1")
@@ -80,8 +92,7 @@ QString OpptimizerUtils::getSmartReflexStatus()
     return "Unknown";
 }
 
-QString OpptimizerUtils::getMaxFreq()
-{
+QString OpptimizerUtils::getMaxFreq(){
     if(lastOPPtimizerStatus == "ERROR")
         return "ERR";
 
@@ -94,8 +105,7 @@ QString OpptimizerUtils::getMaxFreq()
         return "Unknown";
 }
 
-Q_DECL_EXPORT int main(int argc, char *argv[])
-{
+Q_DECL_EXPORT int main(int argc, char *argv[]){
     QCoreApplication::setOrganizationName("FakeCompany");
     QCoreApplication::setOrganizationDomain("appcheck.net");
     QCoreApplication::setApplicationName("OPPtimizer");

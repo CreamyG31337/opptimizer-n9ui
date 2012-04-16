@@ -20,6 +20,7 @@
 #include <QtAlgorithms>
 #include <QStack>
 #include <QMap>
+#include <QFile>
 
 
 class OpptimizerUtils : public QObject
@@ -31,6 +32,7 @@ public:
     Q_INVOKABLE QString getSmartReflexStatus();
     Q_INVOKABLE QString getMaxFreq();
     Q_INVOKABLE void refreshStatus();
+    Q_INVOKABLE void applySettings(int reqFreq, int reqVolt, bool SREnable, bool changeVolt);
 private:
     QString lastOPPtimizerStatus;
     QString lastSmartReflexStatus;

@@ -4,6 +4,7 @@ import com.nokia.meego 1.0
 import com.nokia.extras 1.0
 
 Page {
+    id: statusPage
     anchors.margins: UiConstants.DefaultMargin
 
     BusyIndicator{
@@ -13,6 +14,18 @@ Page {
         visible: false
         running: false
         z: 50
+    }
+
+    function refresh(){
+        myBusyInd.running = true;
+        myBusyInd.visible = true;
+        objOpptimizerUtils.refreshStatus();
+        lblModuleVal.text = objOpptimizerUtils.getModuleVersion();
+        lblVoltVal.text = objOpptimizerUtils.getMaxVoltage();
+        lblSRVal.text = objOpptimizerUtils.getSmartReflexStatus();
+        lblFreqVal.text = objOpptimizerUtils.getMaxFreq();
+        myBusyInd.running = false;
+        myBusyInd.visible = false;
     }
 
     Label{
@@ -71,10 +84,17 @@ Page {
         text: "Unknown"
     }
     Component.onCompleted: {
-        objOpptimizerUtils.refreshStatus();
-        lblModuleVal.text = objOpptimizerUtils.getModuleVersion();
-        lblVoltVal.text = objOpptimizerUtils.getMaxVoltage();
-        lblSRVal.text = objOpptimizerUtils.getSmartReflexStatus();
-        lblFreqVal.text = objOpptimizerUtils.getMaxFreq();
+        refresh();
+    }
+    Connections {
+        target: platformWindow
+        onActiveChanged: {
+            if (platformWindow.active){
+                refresh();
+            }
+            else{
+                  //App became inactive
+            }
+        }
     }
 }
